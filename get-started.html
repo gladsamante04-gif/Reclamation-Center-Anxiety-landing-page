@@ -58,7 +58,7 @@
       <h3>Get Started Today</h3>
       <p class="form-intro">Share your name and number, and our team will reach out to you.</p>
       <label class="field">First name *<input type="text" name="firstName" id="f-name" autocomplete="given-name" maxlength="80" required></label>
-      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="30" required></label>
+      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel-national" inputmode="numeric" maxlength="14" placeholder="(954) 555-1234" required></label>
       <label class="field">Email (optional)<input type="email" name="email" id="f-email" autocomplete="email" maxlength="120"></label>
       <label class="hp" aria-hidden="true">Leave this empty<input type="text" name="website" id="f-web" tabindex="-1" autocomplete="off"></label>
       <label class="consent"><input type="checkbox" id="f-consent" required><span>I agree to be contacted by Reclamation Center about my inquiry. See our <a href="https://www.reclamationcntr.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
@@ -95,13 +95,36 @@
   var btn = document.getElementById('f-submit');
   function show(text, kind){ msg.textContent = text; msg.className = 'form-msg show ' + kind; }
   function val(id){ return document.getElementById(id).value.trim(); }
+  // US phone numbers only: digits only, auto-formatted as (XXX) XXX-XXXX
+  var phoneEl = document.getElementById('f-phone');
+  function phoneDigits(v){
+    var d = String(v).replace(/\D/g, '');
+    if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1); // drop US country code
+    return d.slice(0, 10);
+  }
+  function formatPhone(d){
+    if (d.length > 6) return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+    if (d.length > 3) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+    if (d.length > 0) return '(' + d;
+    return '';
+  }
+  function isUSPhone(d){ return /^[2-9]\d{2}[2-9]\d{6}$/.test(d); }
+  phoneEl.addEventListener('keydown', function(e){
+    // block letters and symbols typed from the keyboard (allow digits and editing keys)
+    if (e.ctrlKey || e.metaKey || e.altKey || e.key.length > 1) return;
+    if (!/[0-9]/.test(e.key)) e.preventDefault();
+  });
+  phoneEl.addEventListener('input', function(){
+    phoneEl.value = formatPhone(phoneDigits(phoneEl.value));
+  });
+
   function param(n){ try { return new URLSearchParams(location.search).get(n) || sessionStorage.getItem(n) || ''; } catch(e){ return ''; } }
 
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
     var data = {
       firstName: val('f-name'),
-      phone: val('f-phone'),
+      phone: formatPhone(phoneDigits(val('f-phone'))),
       email: val('f-email'),
       message: '',
       consent: document.getElementById('f-consent').checked,
@@ -111,7 +134,7 @@
       utmCampaign: param('utm_campaign')
     };
     if (!data.firstName){ show('Please enter your first name.', 'error'); document.getElementById('f-name').focus(); return; }
-    if (data.phone.replace(/\D/g,'').length < 10){ show('Please enter a phone number with area code.', 'error'); document.getElementById('f-phone').focus(); return; }
+    if (!isUSPhone(phoneDigits(data.phone))){ show('Please enter a valid 10-digit US phone number, including area code.', 'error'); phoneEl.focus(); return; }
     if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){ show('Please check your email address, or leave it blank.', 'error'); document.getElementById('f-email').focus(); return; }
     if (!data.consent){ show('Please check the box so our team can contact you.', 'error'); document.getElementById('f-consent').focus(); return; }
 
