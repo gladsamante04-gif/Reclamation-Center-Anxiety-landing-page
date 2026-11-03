@@ -57,12 +57,22 @@ section{padding:clamp(56px,8vw,104px) 0}
 .btn-primary:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
 .btn-secondary{background:transparent;color:var(--teal)}
 .btn-secondary:hover{background:var(--teal-tint)}
+/* Book Now: leaf green so it stands apart from the teal Get Started button */
+.btn-book{background:var(--leaf);border-color:var(--leaf);color:#00383C}
+.btn-book:hover{background:#76A600;border-color:#76A600;color:#FFFFFF}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap}
 .section-cta{margin-top:44px}
 .cta-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;max-width:600px}
 .center .cta-pair{margin-left:auto;margin-right:auto}
 .cta-pair .btn{width:100%;padding:0 20px}
+/* Three-button rows (Get Started / Book Now / Call) */
+.cta-trio{grid-template-columns:repeat(3,minmax(0,1fr));max-width:900px}
+.cta-trio .btn{padding:0 14px;font-size:.97rem}
+/* In narrow columns, stack 2 + 1 so the Call button text doesn't wrap */
+.hero-copy .cta-trio,.inclusive-copy .cta-trio,.final-solo .cta-trio{grid-template-columns:repeat(2,minmax(0,1fr));max-width:600px}
+.hero-copy .cta-trio .btn-secondary,.inclusive-copy .cta-trio .btn-secondary,.final-solo .cta-trio .btn-light{grid-column:1 / -1}
 .ty .cta-pair{grid-template-columns:1fr;max-width:300px}
+@media (max-width:760px){.cta-trio,.hero-copy .cta-trio,.inclusive-copy .cta-trio,.final-solo .cta-trio{grid-template-columns:1fr;max-width:none}}
 @media (max-width:620px){.cta-pair{grid-template-columns:1fr;max-width:none}.btn{min-height:52px}}
 
 /* Header: always on white so the logo reads correctly */
@@ -82,6 +92,9 @@ section{padding:clamp(56px,8vw,104px) 0}
 .header-call{min-height:52px;padding:0 24px;background:transparent;border-color:#004F54;color:#004F54}
 .header-call:hover{background:#E5EFEE}
 .header-call{white-space:nowrap;flex:0 0 auto}
+.header-btns{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.header-book{min-height:52px;padding:0 24px;background:#85BB00;border-color:#85BB00;color:#00383C;white-space:nowrap;flex:0 0 auto}
+.header-book:hover{background:#76A600;border-color:#76A600;color:#FFFFFF}
 .logo{min-width:0}
 .logo-icon,.logo-word,.logo-tag,.logo-words{flex-shrink:0}
 .btn{text-align:center;line-height:1.3}
@@ -91,8 +104,10 @@ section{padding:clamp(56px,8vw,104px) 0}
   .logo-word{width:150px}
   .logo-tag{width:104px}
   .header-call{min-height:46px;padding:0 16px}
+  .header-book{min-height:46px;padding:0 16px}
 }
 @media (max-width:760px){.header-call .today{display:none}}
+@media (max-width:560px){.header-book{display:none}} /* sticky bar + hero carry Book Now on small phones */
 @media (max-width:360px){.header-main{padding:0 14px;gap:8px}.logo{gap:8px}.logo-icon{height:38px}.logo-word{width:118px}.logo-tag{width:84px}.header-call{padding:0 14px}}
 @media (max-width:300px){.logo-icon{height:34px}.logo-word{width:96px}.logo-tag{display:none}.header-call{padding:0 12px;min-height:42px}section{padding:44px 0}}
 
@@ -243,9 +258,11 @@ footer strong{color:#0F3437}
 /* Sticky mobile bar (standalone use; on Wix use the mobile Quick Action Bar instead) */
 .sticky-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#FFFFFF;border-top:1px solid #DCE6E4;box-shadow:0 -6px 18px rgba(0,79,84,.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:none;gap:10px;transform:translateY(110%);transition:transform .2s ease}
 .sticky-bar .btn{flex:1 1 0;min-height:52px;padding:0 10px;gap:8px;white-space:nowrap}
-.sticky-bar .btn-primary{flex-grow:1.35}
+.sticky-bar .btn-primary{flex-grow:1.2}
 .sticky-bar .btn-secondary{color:#004F54;border-color:#004F54}
 .sticky-bar .btn-primary{background:#004F54;border-color:#004F54;color:#FFFFFF}
+.sticky-bar .btn{font-size:.93rem}
+@media (max-width:380px){.sticky-bar .btn{padding:0 6px;gap:6px}}
 .sticky-bar.visible{transform:translateY(0)}
 @media (max-width:440px){.sticky-bar .sb-long{display:none}}
 @media (prefers-reduced-motion: reduce){.sticky-bar{transition:none}}
