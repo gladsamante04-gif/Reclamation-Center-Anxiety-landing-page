@@ -35,8 +35,8 @@ Note: the form sends to your live Wix site, so it only saves test leads after th
 
 | File / folder | What it is |
 |---|---|
-| `index.html` | The landing page. Every "Get Started" button opens the form page |
-| `get-started.html` | The form page ("Get Started Today" form) |
+| `index.html` | The landing page. Every "Let Us Help You Reclaim Your Life Today" button opens the form page |
+| `get-started.html` | The form page ("Get Started Today" form with the booking calendar) |
 | `thank-you.html` | Shown after someone submits the form |
 | `styles.css` | Shared design for all three pages |
 | `assets/images/` | Logo pieces and the six photos |
@@ -71,8 +71,23 @@ Every push to `main` now builds and publishes the site automatically (check prog
 ## Step 3 – Connect the form to Wix
 
 1. Wix editor (Dev Mode on) → **CMS** → create a collection named **AnxietyLeads** with fields:
-   `firstName` (Text), `phone` (Text), `email` (Text), `message` (Text), `consent` (Boolean),
+   `firstName` (Text), `phone` (Text), `email` (Text),
+   `preferredDate` (Text), `preferredDateISO` (Text), `preferredTime` (Text),
+   `message` (Text), `consent` (Boolean),
    `page` (Text), `utmSource` (Text), `utmCampaign` (Text), `submittedAt` (Date and Time).
+   (If the collection already exists, just add the three new fields `preferredDate`,
+   `preferredDateISO`, and `preferredTime`, then re-paste the backend code and publish again.)
+
+### How booking availability works
+
+- All dates and times are **Florida (Eastern) time**, no matter where the visitor is.
+- Each date + time can only be booked **once**. The form greys out taken times, and the
+  backend also rejects a second submission for the same slot, so two visitors can't
+  double-book even if they submit at the same moment.
+- To **free up a slot** (a cancellation, or a spam lead), delete that row from the
+  **AnxietyLeads** collection — the time becomes bookable again right away.
+- The page reads availability from `https://www.reclamationcntr.com/_functions/slots`,
+  which only shares date/time pairs — never names, phone numbers, or emails.
 2. Set the collection permissions so only admins can view the data.
 3. Code panel → **Backend** → create `http-functions.js` → paste the code from `wix-backend/http-functions.js`.
 4. **Publish** the Wix site.

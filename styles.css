@@ -57,22 +57,12 @@ section{padding:clamp(56px,8vw,104px) 0}
 .btn-primary:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
 .btn-secondary{background:transparent;color:var(--teal)}
 .btn-secondary:hover{background:var(--teal-tint)}
-/* Book Now: leaf green so it stands apart from the teal Get Started button */
-.btn-book{background:var(--leaf);border-color:var(--leaf);color:#00383C}
-.btn-book:hover{background:#76A600;border-color:#76A600;color:#FFFFFF}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap}
 .section-cta{margin-top:44px}
 .cta-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;max-width:600px}
 .center .cta-pair{margin-left:auto;margin-right:auto}
 .cta-pair .btn{width:100%;padding:0 20px}
-/* Three-button rows (Get Started / Book Now / Call) */
-.cta-trio{grid-template-columns:repeat(3,minmax(0,1fr));max-width:900px}
-.cta-trio .btn{padding:0 14px;font-size:.97rem}
-/* In narrow columns, stack 2 + 1 so the Call button text doesn't wrap */
-.hero-copy .cta-trio,.inclusive-copy .cta-trio,.final-solo .cta-trio{grid-template-columns:repeat(2,minmax(0,1fr));max-width:600px}
-.hero-copy .cta-trio .btn-secondary,.inclusive-copy .cta-trio .btn-secondary,.final-solo .cta-trio .btn-light{grid-column:1 / -1}
 .ty .cta-pair{grid-template-columns:1fr;max-width:300px}
-@media (max-width:760px){.cta-trio,.hero-copy .cta-trio,.inclusive-copy .cta-trio,.final-solo .cta-trio{grid-template-columns:1fr;max-width:none}}
 @media (max-width:620px){.cta-pair{grid-template-columns:1fr;max-width:none}.btn{min-height:52px}}
 
 /* Header: always on white so the logo reads correctly */
@@ -92,9 +82,6 @@ section{padding:clamp(56px,8vw,104px) 0}
 .header-call{min-height:52px;padding:0 24px;background:transparent;border-color:#004F54;color:#004F54}
 .header-call:hover{background:#E5EFEE}
 .header-call{white-space:nowrap;flex:0 0 auto}
-.header-btns{display:flex;align-items:center;gap:10px;flex:0 0 auto}
-.header-book{min-height:52px;padding:0 24px;background:#85BB00;border-color:#85BB00;color:#00383C;white-space:nowrap;flex:0 0 auto}
-.header-book:hover{background:#76A600;border-color:#76A600;color:#FFFFFF}
 .logo{min-width:0}
 .logo-icon,.logo-word,.logo-tag,.logo-words{flex-shrink:0}
 .btn{text-align:center;line-height:1.3}
@@ -104,10 +91,8 @@ section{padding:clamp(56px,8vw,104px) 0}
   .logo-word{width:150px}
   .logo-tag{width:104px}
   .header-call{min-height:46px;padding:0 16px}
-  .header-book{min-height:46px;padding:0 16px}
 }
 @media (max-width:760px){.header-call .today{display:none}}
-@media (max-width:560px){.header-book{display:none}} /* sticky bar + hero carry Book Now on small phones */
 @media (max-width:360px){.header-main{padding:0 14px;gap:8px}.logo{gap:8px}.logo-icon{height:38px}.logo-word{width:118px}.logo-tag{width:84px}.header-call{padding:0 14px}}
 @media (max-width:300px){.logo-icon{height:34px}.logo-word{width:96px}.logo-tag{display:none}.header-call{padding:0 12px;min-height:42px}section{padding:44px 0}}
 
@@ -258,11 +243,9 @@ footer strong{color:#0F3437}
 /* Sticky mobile bar (standalone use; on Wix use the mobile Quick Action Bar instead) */
 .sticky-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#FFFFFF;border-top:1px solid #DCE6E4;box-shadow:0 -6px 18px rgba(0,79,84,.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:none;gap:10px;transform:translateY(110%);transition:transform .2s ease}
 .sticky-bar .btn{flex:1 1 0;min-height:52px;padding:0 10px;gap:8px;white-space:nowrap}
-.sticky-bar .btn-primary{flex-grow:1.2}
+.sticky-bar .btn-primary{flex-grow:1.35}
 .sticky-bar .btn-secondary{color:#004F54;border-color:#004F54}
 .sticky-bar .btn-primary{background:#004F54;border-color:#004F54;color:#FFFFFF}
-.sticky-bar .btn{font-size:.93rem}
-@media (max-width:380px){.sticky-bar .btn{padding:0 6px;gap:6px}}
 .sticky-bar.visible{transform:translateY(0)}
 @media (max-width:440px){.sticky-bar .sb-long{display:none}}
 @media (prefers-reduced-motion: reduce){.sticky-bar{transition:none}}
@@ -340,3 +323,40 @@ footer strong{color:#0F3437}
 .quotes figcaption{font-size:.93rem;color:var(--muted)}
 .quotes cite{font-style:normal;font-weight:600;color:var(--ink)}
 .bg-white .card.city{background:var(--surface);border:1px solid var(--line);padding:0;overflow:hidden;gap:0}
+
+/* Single CTA button ("Let Us Help You Reclaim Your Life Today") */
+.cta-solo{display:flex;width:100%}
+.center .cta-solo,.final-solo .cta-solo,.inclusive-copy .cta-solo{justify-content:center}
+.btn-cta{min-height:60px;padding:14px 34px;white-space:normal;line-height:1.3;text-align:center;max-width:540px}
+@media (max-width:620px){.cta-solo .btn-cta{width:100%;max-width:none}}
+.sticky-bar .btn-cta{white-space:normal;font-size:.95rem;line-height:1.25;padding:8px 14px}
+
+/* Booking: pop-up calendar */
+.date-field,.time-field{display:flex;flex-direction:column;gap:7px;font-size:.92rem;font-weight:600;color:#0F3437}
+.date-wrap{position:relative}
+.date-wrap input{cursor:pointer;padding-right:46px}
+.date-icon{position:absolute;right:15px;top:16px;color:#004F54;pointer-events:none}
+.cal-pop{position:absolute;z-index:40;top:calc(100% + 8px);left:0;right:0;background:#FFFFFF;border:1px solid #B9CAC7;border-radius:16px;box-shadow:0 14px 34px rgba(0,56,60,.18);padding:16px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cal-title{font-weight:600;color:#0F3437;font-size:1rem}
+.cal-nav{width:36px;height:36px;border-radius:999px;border:1px solid #B9CAC7;background:#FFFFFF;color:#004F54;font-size:1.3rem;line-height:1;cursor:pointer;display:grid;place-items:center}
+.cal-nav:hover:not([disabled]){background:#E5EFEE}
+.cal-nav[disabled]{opacity:.35;cursor:default}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{margin-bottom:4px}
+.cal-dow span{text-align:center;font-size:.74rem;font-weight:600;color:#546866;text-transform:uppercase;letter-spacing:.04em}
+.cal-day{aspect-ratio:1;min-height:34px;border:0;border-radius:999px;background:transparent;color:#0F3437;font:inherit;font-size:.92rem;font-weight:500;cursor:pointer;display:grid;place-items:center}
+.cal-day:hover:not([disabled]){background:#E5EFEE}
+.cal-day[disabled]{color:#B9CAC7;cursor:default}
+.cal-day.selected{background:#004F54;color:#FFFFFF}
+.cal-note{margin-top:10px;font-size:.8rem;font-weight:400;color:#546866;text-align:center}
+
+/* Booking: time slots */
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.time-slot{min-height:44px;border:1px solid #B9CAC7;border-radius:10px;background:#FFFFFF;color:#0F3437;font:inherit;font-size:.9rem;font-weight:500;cursor:pointer}
+.time-slot:hover{border-color:#004F54;background:#E5EFEE}
+.time-slot.selected{background:#004F54;border-color:#004F54;color:#FFFFFF;font-weight:600}
+.time-slot.taken{background:#F3F5F4;border-color:#E3EAE8;color:#B9CAC7;text-decoration:line-through;cursor:default}
+.tz-note{display:block;font-size:.78rem;font-weight:400;font-style:normal;color:#546866}
+@media (max-width:380px){.time-grid{grid-template-columns:repeat(2,1fr)}}
+.form-note{font-size:.82rem;color:#546866;text-align:center;margin-top:-4px}

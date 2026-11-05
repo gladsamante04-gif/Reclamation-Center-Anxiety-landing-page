@@ -3,8 +3,18 @@
 // Endpoint (after publishing the Wix site): https://www.reclamationcntr.com/_functions/lead
 //
 // Before this works, create a CMS collection named "AnxietyLeads" with these fields:
-//   firstName (Text), phone (Text), email (Text), message (Text), consent (Boolean),
+//   firstName (Text), phone (Text), email (Text),
+//   preferredDate (Text), preferredDateISO (Text), preferredTime (Text),
+//   message (Text), consent (Boolean),
 //   page (Text), utmSource (Text), utmCampaign (Text), submittedAt (Date and Time)
+//
+// Booking behavior:
+//   - Each date + time can only be booked once. A second submission for the same
+//     slot is rejected, and the landing page asks the visitor to pick another time.
+//   - To FREE UP a slot (cancellation or spam), delete that row from AnxietyLeads —
+//     the time becomes bookable again right away.
+//   - The landing page also calls GET /_functions/slots to grey out taken times.
+//     That endpoint only returns date/time pairs — never names, phones, or emails.
 // Set the collection's permissions so that only admins can read it.
 
 import { ok, badRequest, serverError, response } from 'wix-http-functions';
@@ -35,6 +45,28 @@ export function options_lead(request) {
   return response({ status: 204, headers: corsHeaders(request) });
 }
 
+// GET https://www.reclamationcntr.com/_functions/slots
+// Returns which upcoming date + time slots are already taken, so the landing
+// page can grey them out. Shares ONLY date/time pairs — no personal details.
+export async function get_slots(request) {
+  const headers = corsHeaders(request);
+  try {
+    // "Today" in Florida (Eastern) time, as yyyy-mm-dd
+    const todayISO = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const res = await wixData.query('AnxietyLeads')
+      .ge('preferredDateISO', todayISO)
+      .limit(1000)
+      .find({ suppressAuth: true });
+    const slots = res.items
+      .filter(i => i.preferredDateISO && i.preferredTime)
+      .map(i => ({ d: i.preferredDateISO, t: i.preferredTime }));
+    return ok({ headers, body: { ok: true, slots } });
+  } catch (err) {
+    console.error('Slots lookup error', err);
+    return serverError({ headers, body: { ok: false } });
+  }
+}
+
 export async function post_lead(request) {
   const headers = corsHeaders(request);
   try {
@@ -49,6 +81,9 @@ export async function post_lead(request) {
       firstName: clean(body.firstName, 80),
       phone: clean(body.phone, 30),
       email: clean(body.email, 120),
+      preferredDate: clean(body.preferredDate, 60),
+      preferredDateISO: clean(body.preferredDateISO, 10),
+      preferredTime: clean(body.preferredTime, 20),
       message: clean(body.message, 1000),
       consent: body.consent === true,
       page: clean(body.page, 60),
@@ -59,6 +94,19 @@ export async function post_lead(request) {
 
     if (!lead.firstName || lead.phone.replace(/\D/g, '').length < 10 || !lead.consent) {
       return badRequest({ headers, body: { ok: false, error: 'Missing required fields' } });
+    }
+
+    // No double-booking: if this exact date + time is already taken, say so
+    // instead of saving, and the page will ask the visitor to pick another time.
+    if (lead.preferredDateISO && lead.preferredTime) {
+      const taken = await wixData.query('AnxietyLeads')
+        .eq('preferredDateISO', lead.preferredDateISO)
+        .eq('preferredTime', lead.preferredTime)
+        .limit(1)
+        .find({ suppressAuth: true });
+      if (taken.items.length > 0) {
+        return response({ status: 409, headers, body: { ok: false, error: 'slot_taken' } });
+      }
     }
 
     await wixData.insert('AnxietyLeads', lead, { suppressAuth: true });
