@@ -58,7 +58,7 @@
       <h3>Get Started Today</h3>
       <p class="form-intro">Share your details and choose the date and time that work best for you. Our team will call to confirm your visit.</p>
       <label class="field">First name *<input type="text" name="firstName" id="f-name" autocomplete="given-name" maxlength="80" required></label>
-      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="30" required></label>
+      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="16" placeholder="(954) 555-1234" required></label>
       <label class="field">Email (optional)<input type="email" name="email" id="f-email" autocomplete="email" maxlength="120"></label>
       <div class="field date-field">
         <label for="f-date">Preferred date *</label>
@@ -270,6 +270,22 @@
   function val(id){ return document.getElementById(id).value.trim(); }
   function param(n){ try { return new URLSearchParams(location.search).get(n) || sessionStorage.getItem(n) || ''; } catch(e){ return ''; } }
 
+  // Phone: US numbers only. Letters and other text can't be typed at all —
+  // only digits and common phone punctuation ( ) - . + and spaces.
+  var phoneInput = document.getElementById('f-phone');
+  phoneInput.addEventListener('input', function(){
+    var cleaned = this.value.replace(/[^\d()\-.+\s]/g, '');
+    if (cleaned !== this.value) this.value = cleaned;
+  });
+
+  // A valid US number is 10 digits (area code and exchange can't start with 0 or 1),
+  // optionally written with a leading 1 or +1.
+  function usPhoneDigits(raw){
+    var d = raw.replace(/\D/g, '');
+    if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
+    return /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(d) ? d : '';
+  }
+
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
     var data = {
@@ -287,7 +303,7 @@
       utmCampaign: param('utm_campaign')
     };
     if (!data.firstName){ show('Please enter your first name.', 'error'); document.getElementById('f-name').focus(); return; }
-    if (data.phone.replace(/\D/g,'').length < 10){ show('Please enter a phone number with area code.', 'error'); document.getElementById('f-phone').focus(); return; }
+    if (!usPhoneDigits(data.phone)){ show('Please enter a valid 10-digit US phone number, like (954) 555-1234.', 'error'); document.getElementById('f-phone').focus(); return; }
     if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){ show('Please check your email address, or leave it blank.', 'error'); document.getElementById('f-email').focus(); return; }
     if (!data.preferredDate){ show('Please choose a preferred date.', 'error'); dateInput.focus(); return; }
     if (!data.preferredTime){ show('Please choose a preferred time.', 'error'); timeField.scrollIntoView({behavior:'smooth', block:'nearest'}); return; }

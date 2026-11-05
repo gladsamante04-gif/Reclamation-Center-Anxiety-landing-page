@@ -92,7 +92,13 @@ export async function post_lead(request) {
       submittedAt: new Date()
     };
 
-    if (!lead.firstName || lead.phone.replace(/\D/g, '').length < 10 || !lead.consent) {
+    // Phone must be a valid 10-digit US number (optionally with a leading 1),
+    // checked here too so nothing can bypass the form's own check.
+    let phoneDigits = lead.phone.replace(/\D/g, '');
+    if (phoneDigits.length === 11 && phoneDigits.startsWith('1')) phoneDigits = phoneDigits.slice(1);
+    const validUSPhone = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(phoneDigits);
+
+    if (!lead.firstName || !validUSPhone || !lead.consent) {
       return badRequest({ headers, body: { ok: false, error: 'Missing required fields' } });
     }
 
