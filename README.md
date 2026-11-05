@@ -72,11 +72,11 @@ Every push to `main` now builds and publishes the site automatically (check prog
 
 1. Wix editor (Dev Mode on) → **CMS** → create a collection named **AnxietyLeads** with fields:
    `firstName` (Text), `phone` (Text), `email` (Text),
-   `preferredDate` (Text), `preferredDateISO` (Text), `preferredTime` (Text),
+   `preferredDate` (Text), `preferredDateIso` (Text), `preferredTime` (Text),
    `message` (Text), `consent` (Boolean), `smsConsent` (Boolean),
    `page` (Text), `utmSource` (Text), `utmCampaign` (Text), `submittedAt` (Date and Time).
    (If the collection already exists, just add the three new fields `preferredDate`,
-   `preferredDateISO`, and `preferredTime`, then re-paste the backend code and publish again.)
+   `preferredDateIso`, and `preferredTime`, then re-paste the backend code and publish again.)
 
 ### How booking availability works
 

@@ -4,7 +4,7 @@
 //
 // Before this works, create a CMS collection named "AnxietyLeads" with these fields:
 //   firstName (Text), phone (Text), email (Text),
-//   preferredDate (Text), preferredDateISO (Text), preferredTime (Text),
+//   preferredDate (Text), preferredDateIso (Text), preferredTime (Text),
 //   message (Text), consent (Boolean), smsConsent (Boolean),
 //   page (Text), utmSource (Text), utmCampaign (Text), submittedAt (Date and Time)
 //
@@ -54,12 +54,12 @@ export async function get_slots(request) {
     // "Today" in Florida (Eastern) time, as yyyy-mm-dd
     const todayISO = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     const res = await wixData.query('AnxietyLeads')
-      .ge('preferredDateISO', todayISO)
+      .ge('preferredDateIso', todayISO)
       .limit(1000)
       .find({ suppressAuth: true });
     const slots = res.items
-      .filter(i => i.preferredDateISO && i.preferredTime)
-      .map(i => ({ d: i.preferredDateISO, t: i.preferredTime }));
+      .filter(i => i.preferredDateIso && i.preferredTime)
+      .map(i => ({ d: i.preferredDateIso, t: i.preferredTime }));
     return ok({ headers, body: { ok: true, slots } });
   } catch (err) {
     console.error('Slots lookup error', err);
@@ -82,7 +82,7 @@ export async function post_lead(request) {
       phone: clean(body.phone, 30),
       email: clean(body.email, 120),
       preferredDate: clean(body.preferredDate, 60),
-      preferredDateISO: clean(body.preferredDateISO, 10),
+      preferredDateIso: clean(body.preferredDateIso, 10),
       preferredTime: clean(body.preferredTime, 20),
       message: clean(body.message, 1000),
       consent: body.consent === true,
@@ -105,9 +105,9 @@ export async function post_lead(request) {
 
     // No double-booking: if this exact date + time is already taken, say so
     // instead of saving, and the page will ask the visitor to pick another time.
-    if (lead.preferredDateISO && lead.preferredTime) {
+    if (lead.preferredDateIso && lead.preferredTime) {
       const taken = await wixData.query('AnxietyLeads')
-        .eq('preferredDateISO', lead.preferredDateISO)
+        .eq('preferredDateIso', lead.preferredDateIso)
         .eq('preferredTime', lead.preferredTime)
         .limit(1)
         .find({ suppressAuth: true });

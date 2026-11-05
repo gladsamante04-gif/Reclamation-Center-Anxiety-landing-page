@@ -301,7 +301,7 @@
       phone: val('f-phone'),
       email: val('f-email'),
       preferredDate: picked ? fmtDate(picked) : '',
-      preferredDateISO: picked ? iso(picked) : '',
+      preferredDateIso: picked ? iso(picked) : '',
       preferredTime: pickedTime,
       message: '',
       consent: document.getElementById('f-consent').checked,
@@ -329,7 +329,7 @@
         btn.disabled = false; btn.textContent = 'Book My Appointment';
         if (err && err.slotTaken){
           // Someone booked this slot moments ago — mark it taken and ask for another
-          (booked[data.preferredDateISO] = booked[data.preferredDateISO] || {})[data.preferredTime] = true;
+          (booked[data.preferredDateIso] = booked[data.preferredDateIso] || {})[data.preferredTime] = true;
           pickedTime = '';
           renderTimes(picked);
           show('That time was just booked by someone else. Please choose another time.', 'error');
