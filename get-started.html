@@ -58,7 +58,7 @@
       <h3>Get Started Today</h3>
       <p class="form-intro">Share your details and choose the date and time that work best for you. Our team will call to confirm your visit.</p>
       <label class="field">First name *<input type="text" name="firstName" id="f-name" autocomplete="given-name" maxlength="80" required></label>
-      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="16" placeholder="(954) 555-1234" required></label>
+      <label class="field">Phone *<input type="tel" name="phone" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="17" placeholder="(954) 555-1234" required></label>
       <label class="field">Email (optional)<input type="email" name="email" id="f-email" autocomplete="email" maxlength="120"></label>
       <div class="field date-field">
         <label for="f-date">Preferred date *</label>
@@ -270,12 +270,19 @@
   function val(id){ return document.getElementById(id).value.trim(); }
   function param(n){ try { return new URLSearchParams(location.search).get(n) || sessionStorage.getItem(n) || ''; } catch(e){ return ''; } }
 
-  // Phone: US numbers only. Letters and other text can't be typed at all —
-  // only digits and common phone punctuation ( ) - . + and spaces.
+  // Phone: US numbers only. The field formats itself as (954) 555-1234 while
+  // typing — letters never appear, and it stops at 10 digits (11 with a leading 1).
   var phoneInput = document.getElementById('f-phone');
   phoneInput.addEventListener('input', function(){
-    var cleaned = this.value.replace(/[^\d()\-.+\s]/g, '');
-    if (cleaned !== this.value) this.value = cleaned;
+    var d = this.value.replace(/\D/g, '');
+    var lead = '';
+    if (d.charAt(0) === '1'){ lead = '+1 '; d = d.slice(1); }
+    d = d.slice(0, 10);
+    var out = '';
+    if (d.length > 6) out = '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+    else if (d.length > 3) out = '(' + d.slice(0,3) + ') ' + d.slice(3);
+    else if (d.length > 0) out = '(' + d;
+    this.value = lead + out;
   });
 
   // A valid US number is 10 digits (area code and exchange can't start with 0 or 1),
