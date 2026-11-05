@@ -83,6 +83,7 @@
       </div>
       <label class="hp" aria-hidden="true">Leave this empty<input type="text" name="website" id="f-web" tabindex="-1" autocomplete="off"></label>
       <label class="consent"><input type="checkbox" id="f-consent" required><span>I agree to be contacted by Reclamation Center about my inquiry. See our <a href="https://www.reclamationcntr.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+      <label class="consent"><input type="checkbox" id="f-sms"><span>I authorize Reclamation Center to send me appointment confirmations, reminders, and follow-up text messages (SMS) at the phone number provided. Message frequency varies. Message &amp; data rates may apply. Reply STOP to opt out at any time, or HELP for help. Consent to receive texts is not a condition of receiving care. See our <a href="https://www.reclamationcntr.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
       <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
       <button class="btn btn-primary" type="submit" id="f-submit">Book My Appointment</button>
       <p class="form-note">Your time isn't final until our team calls to confirm it with you.</p>
@@ -304,6 +305,7 @@
       preferredTime: pickedTime,
       message: '',
       consent: document.getElementById('f-consent').checked,
+      smsConsent: document.getElementById('f-sms').checked,
       website: val('f-web'),
       page: 'anxiety-support',
       utmSource: param('utm_source'),

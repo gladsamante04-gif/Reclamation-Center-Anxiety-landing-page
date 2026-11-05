@@ -5,7 +5,7 @@
 // Before this works, create a CMS collection named "AnxietyLeads" with these fields:
 //   firstName (Text), phone (Text), email (Text),
 //   preferredDate (Text), preferredDateISO (Text), preferredTime (Text),
-//   message (Text), consent (Boolean),
+//   message (Text), consent (Boolean), smsConsent (Boolean),
 //   page (Text), utmSource (Text), utmCampaign (Text), submittedAt (Date and Time)
 //
 // Booking behavior:
@@ -86,6 +86,7 @@ export async function post_lead(request) {
       preferredTime: clean(body.preferredTime, 20),
       message: clean(body.message, 1000),
       consent: body.consent === true,
+      smsConsent: body.smsConsent === true,
       page: clean(body.page, 60),
       utmSource: clean(body.utmSource, 80),
       utmCampaign: clean(body.utmCampaign, 120),
