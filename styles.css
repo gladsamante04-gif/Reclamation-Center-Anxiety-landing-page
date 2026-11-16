@@ -362,3 +362,16 @@ footer strong{color:#0F3437}
 .tz-note{display:block;font-size:.78rem;font-weight:400;font-style:normal;color:#546866}
 @media (max-width:380px){.time-grid{grid-template-columns:repeat(2,1fr)}}
 .form-note{font-size:.82rem;color:#546866;text-align:center;margin-top:-4px}
+
+/* Pain-point section: illustration + empathetic list instead of icon cards */
+.pain-wrap{display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center;margin-top:34px;text-align:left}
+.pain-art img{width:100%;max-width:440px;height:auto;border-radius:20px;display:block;margin:0 auto}
+.pain-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pain-list li{background:var(--ground,#F2F6F4);border-left:4px solid #8BAD2D;border-radius:12px;padding:16px 18px}
+.pain-list h3{margin:0 0 6px;font-size:1.02rem}
+.pain-list p{margin:0;font-size:.92rem;color:#3E5553}
+@media (max-width:900px){
+  .pain-wrap{grid-template-columns:1fr;gap:28px}
+  .pain-art img{max-width:300px}
+  .pain-list{grid-template-columns:1fr}
+}
