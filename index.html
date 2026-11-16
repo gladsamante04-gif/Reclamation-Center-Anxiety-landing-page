@@ -78,13 +78,13 @@
         <line x1="550" y1="330" x2="972" y2="330"/>
         <line x1="550" y1="330" x2="900" y2="535"/>
       </svg>
-      <div class="mm-center"><img src="./assets/images/anxious-illustration.jpg" alt="Illustration of a woman overwhelmed by anxious thoughts"></div>
-      <div class="mm-bubble" style="left:18.2%;top:18.9%"><h3>Your Mind Won’t Stop Worrying</h3><p>You keep thinking about what could go wrong, even when you try to relax.</p></div>
-      <div class="mm-bubble" style="left:11.6%;top:50%"><h3>You’re Tired, But Can’t Sleep</h3><p>Your body needs rest, but your thoughts keep you awake at night.</p></div>
-      <div class="mm-bubble" style="left:18.2%;top:81.1%"><h3>Your Body Feels the Anxiety Too</h3><p>A racing heart, tense muscles, or sudden nervousness can leave you exhausted.</p></div>
-      <div class="mm-bubble" style="left:81.8%;top:18.9%"><h3>You Always Feel on Edge</h3><p>Even when everything seems okay, you can’t seem to shake that uneasy feeling.</p></div>
-      <div class="mm-bubble" style="left:88.4%;top:50%"><h3>It’s Hard to Stay Focused</h3><p>You try to concentrate, but your worries keep pulling your attention away.</p></div>
-      <div class="mm-bubble" style="left:81.8%;top:81.1%"><h3>You Avoid Things You Used to Enjoy</h3><p>You want to participate, but fear and worry sometimes hold you back.</p></div>
+      <div class="mm-center"><img src="./assets/images/anxious-man.jpg" alt="A man covering his face with his hands, overwhelmed"></div>
+      <button type="button" class="mm-bubble" style="left:18.2%;top:18.9%" aria-pressed="false"><span class="mm-t">Your Mind Won’t Stop Worrying</span><span class="mm-d">You keep thinking about what could go wrong, even when you try to relax.</span></button>
+      <button type="button" class="mm-bubble" style="left:11.6%;top:50%" aria-pressed="false"><span class="mm-t">You’re Tired, But Can’t Sleep</span><span class="mm-d">Your body needs rest, but your thoughts keep you awake at night.</span></button>
+      <button type="button" class="mm-bubble" style="left:18.2%;top:81.1%" aria-pressed="false"><span class="mm-t">Your Body Feels the Anxiety Too</span><span class="mm-d">A racing heart, tense muscles, or sudden nervousness can leave you exhausted.</span></button>
+      <button type="button" class="mm-bubble" style="left:81.8%;top:18.9%" aria-pressed="false"><span class="mm-t">You Always Feel on Edge</span><span class="mm-d">Even when everything seems okay, you can’t seem to shake that uneasy feeling.</span></button>
+      <button type="button" class="mm-bubble" style="left:88.4%;top:50%" aria-pressed="false"><span class="mm-t">It’s Hard to Stay Focused</span><span class="mm-d">You try to concentrate, but your worries keep pulling your attention away.</span></button>
+      <button type="button" class="mm-bubble" style="left:81.8%;top:81.1%" aria-pressed="false"><span class="mm-t">You Avoid Things You Used to Enjoy</span><span class="mm-d">You want to participate, but fear and worry sometimes hold you back.</span></button>
     </div>
     <p class="disclaimer">For general education only, not a diagnosis.</p>
     <div class="btn-row cta-solo section-cta">
@@ -255,6 +255,15 @@
     new IntersectionObserver(function(e){ heroGone = !e[0].isIntersecting; update(); }).observe(heroCtas);
     new IntersectionObserver(function(e){ finalVisible = e[0].isIntersecting; update(); }, {threshold:0.15}).observe(finalSection);
   }
+})();
+(function(){
+  // Symptom bubbles: tap or click to highlight
+  document.querySelectorAll('.mm-bubble').forEach(function(b){
+    b.addEventListener('click', function(){
+      var on = b.classList.toggle('active');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  });
 })();
 </script>
 </body>

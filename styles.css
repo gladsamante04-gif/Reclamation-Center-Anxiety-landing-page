@@ -369,14 +369,20 @@ footer strong{color:#0F3437}
 .mm-lines line{stroke:#AFC79A;stroke-width:2.5;stroke-dasharray:7 7}
 .mm-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:250px;height:250px;border-radius:50%;overflow:hidden;border:6px solid #E5EFEE;box-shadow:0 10px 30px rgba(0,56,60,.14);background:#F5F1E8}
 .mm-center img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
-.mm-bubble{position:absolute;transform:translate(-50%,-50%);width:240px;height:240px;border-radius:50%;background:#F2F6F4;border:2px solid #CFE0CC;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px 26px;box-shadow:0 6px 18px rgba(0,56,60,.07)}
-.mm-bubble h3{margin:0 0 7px;font-size:.98rem;line-height:1.25;color:#0F3437}
-.mm-bubble p{margin:0;font-size:.8rem;line-height:1.4;color:#3E5553}
+.mm-bubble{position:absolute;transform:translate(-50%,-50%);width:240px;height:240px;border-radius:50%;background:#F2F6F4;border:2px solid #CFE0CC;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px 26px;box-shadow:0 6px 18px rgba(0,56,60,.07);font:inherit;cursor:pointer;transition:background .25s,border-color .25s,box-shadow .25s,transform .2s}
+.mm-bubble:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 12px 26px rgba(0,56,60,.14)}
+.mm-bubble:focus-visible{outline:3px solid #8BAD2D;outline-offset:3px}
+.mm-bubble .mm-t{display:block;margin:0 0 7px;font-size:.98rem;font-weight:600;line-height:1.25;color:#0F3437}
+.mm-bubble .mm-d{display:block;margin:0;font-size:.8rem;line-height:1.4;color:#3E5553}
+.mm-bubble.active{background:#004F54;border-color:#004F54}
+.mm-bubble.active .mm-t{color:#FFFFFF}
+.mm-bubble.active .mm-d{color:#CFE3E1}
 @media (max-width:1020px){
   .mindmap{height:auto;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:480px}
   .mm-lines{display:none}
   .mm-center{position:static;transform:none;width:190px;height:190px;margin-bottom:6px}
   .mm-bubble{position:static;transform:none;width:100%;height:auto;border-radius:16px;padding:16px 18px;text-align:left;align-items:flex-start}
-  .mm-bubble h3{font-size:1rem}
-  .mm-bubble p{font-size:.9rem}
+  .mm-bubble:hover{transform:translateY(-2px)}
+  .mm-bubble .mm-t{font-size:1rem}
+  .mm-bubble .mm-d{font-size:.9rem}
 }
