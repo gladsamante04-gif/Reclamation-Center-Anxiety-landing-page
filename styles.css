@@ -398,3 +398,15 @@ footer strong{color:#0F3437}
   .care-grid .card.care{flex-direction:column;padding:0}
   .care-photo{height:140px}
 }
+
+/* Steps as warm cards on a soft sage background */
+.bg-sage{background:#EAF2ED}
+.steps-cards{border-top:0;padding:0;margin:44px 0 0;gap:22px}
+.steps-cards li{background:#FFFFFF;border:1px solid #DCE8E0;border-radius:18px;padding:26px 24px 28px;gap:8px;box-shadow:0 8px 22px rgba(0,56,60,.06)}
+.step-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.steps-cards .step-num{font-size:1.15rem;color:#8BAD2D}
+.reassure{margin-top:26px;font-size:1.02rem;color:#0F3437;font-weight:500}
+@media (max-width:900px){
+  .steps-cards{border-left:0;padding:0;grid-template-columns:1fr;gap:16px}
+  .steps-cards .step-num{font-size:1.1rem}
+}
